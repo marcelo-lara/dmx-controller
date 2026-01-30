@@ -75,8 +75,12 @@ class ArtNetSender:
     def _create_socket(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        if self._timeout is not None and self._timeout > 0:
-            s.settimeout(self._timeout)
+        # Some test fakes may not implement settimeout; be tolerant
+        try:
+            if self._timeout is not None and self._timeout > 0:
+                s.settimeout(self._timeout)
+        except Exception:
+            pass
         return s
 
     def send(self, data: Union[bytes, bytearray], force: bool = False) -> None:

@@ -32,6 +32,12 @@ class UniverseBuffer:
         with self._lock:
             return bytes(self._buf)
 
+    def zero_all(self) -> None:
+        """Set all channels to zero atomically."""
+        with self._lock:
+            for i in range(self._channels):
+                self._buf[i] = 0
+
     def set_channels(self, updates: Iterable[tuple[int, int]]) -> None:
         """Atomically apply multiple (channel, value) updates."""
         with self._lock:

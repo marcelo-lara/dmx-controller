@@ -40,7 +40,8 @@ class Engine:
         interval = 1.0 / self.fps
         next_time = perf_counter()
         iterations = 0
-        while self._running.is_set() and (max_iterations is None or iterations < max_iterations):
+        # If max_iterations is provided run for that many iterations regardless of _running flag.
+        while (self._running.is_set() or max_iterations is not None) and (max_iterations is None or iterations < max_iterations):
             now = perf_counter()
             if now < next_time:
                 time.sleep(next_time - now)

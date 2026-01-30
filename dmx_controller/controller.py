@@ -48,7 +48,7 @@ class Controller:
         """
         if self.buffer is None:
             return
-        # Zero all channels
-        self.buffer.set_channels(((ch, 0) for ch in range(1, 512 + 1)))
+        # Zero all channels (use buffer API to avoid size assumptions)
+        self.buffer.zero_all()
         if send:
             self.send_frame(force=force)
