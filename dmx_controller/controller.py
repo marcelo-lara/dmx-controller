@@ -29,3 +29,26 @@ class Controller:
         self._fixtures = fixtures
         self._fixtures_source = Path(path) if path is not None else None
         return fixtures
+
+    def send_frame(self, force: bool = False) -> None:
+        """Snapshot the buffer and send via the configured sender.
+
+        If no buffer or sender is configured, this is a no-op.
+        """
+        if self.buffer is None or self.sender is None:
+            return
+        data = self.buffer.snapshot()
+        self.sender.send(data, force=force)
+
+    def blackout(self, send: bool = True, force: bool = True) -> None:
+        """Set all channels to zero and optionally send immediately.
+
+        - `send`: if True, calls send_frame(force=force)
+        - `force`: if True, bypasses the sender rate limiter
+        """
+        if self.buffer is None:
+            return
+        # Zero all channels
+        self.buffer.set_channels(((ch, 0) for ch in range(1, 512 + 1)))
+        if send:
+            self.send_frame(force=force)
