@@ -1,0 +1,3 @@
+recursive-include dmx_controller/data *.json
+include README.md
+include requirements.txt

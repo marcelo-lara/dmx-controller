@@ -1,0 +1,9 @@
+[project]
+name = "dmx_controller"
+version = "0.1.0"
+description = "DMX Art-Net controller library"
+requires-python = ">=3.10,<4.0"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
