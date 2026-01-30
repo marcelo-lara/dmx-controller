@@ -58,3 +58,20 @@ Every fixture has:
 - [ ] **Graceful Shutdown Profile**:
     - Implement termination signal handlers.
     - **Requirement**: Broadcast a final "Blackout" packet (all channels at 0) before process exit.
+
+## Usage example
+
+A minimal example is available at `examples/simple_run.py`. Use `--dry-run` to avoid sending real Art-Net packets:
+
+```bash
+python examples/simple_run.py --dry-run
+```
+
+Run tests locally after creating a virtualenv and installing dev dependencies listed in `requirements.txt`:
+
+```bash
+python3.10 -m venv dmx-controller
+source dmx-controller/bin/activate
+pip install -r requirements.txt
+pytest -q
+```
