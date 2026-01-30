@@ -38,9 +38,9 @@ pytest -q
 The repository includes a default `fixtures.json` at `dmx_controller/data/fixtures.json`.
 You can load fixtures from:
 
-1. An explicit path: `Controller.load_fixtures(path='path/to/fixtures.json')` or `parse_fixtures_json(path)`.
-2. Packaged data (default): `parse_fixtures_json()`.
-3. Fallback: `./fixtures.json` in current working directory.
+- An explicit path: `Controller.load_fixtures(path='path/to/fixtures.json')` or `parse_fixtures_json(path)`.
+- Packaged data (default): `parse_fixtures_json()`.
+- Fallback: `./fixtures.json` in the current working directory.
 
 `Controller.load_fixtures(path=None, reload=False)` caches parsed fixtures; pass `reload=True` to force re-read.
 
