@@ -190,3 +190,46 @@ class MovingHeadFixture(Fixture):
             self.current_values["tilt"] = tilt
         self._apply_channel_updates(tuple(updates.items()))
         return updates
+
+    # convenience properties for moving-head controls
+    @property
+    def speed(self) -> int:
+        return int(self.current_values.get("speed") or 0)
+
+    @speed.setter
+    def speed(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError("speed must be an integer 0..255")
+        if not 0 <= value <= 255:
+            raise ValueError("speed must be 0..255")
+        if "speed" not in self.channels:
+            raise KeyError("No speed channel for this fixture")
+        self.current_values["speed"] = int(value)
+        self._apply_channel_updates(((self.channels["speed"], int(value)),))
+
+    @property
+    def pan(self) -> int:
+        return int(self.current_values.get("pan") or 0)
+
+    @pan.setter
+    def pan(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError("pan must be an integer 0..65535")
+        if not 0 <= value <= 0xFFFF:
+            raise ValueError("pan must be 0..65535")
+        # preserve current tilt if available
+        tilt = int(self.current_values.get("tilt") or 0)
+        self.set_pan_tilt(value, tilt)
+
+    @property
+    def tilt(self) -> int:
+        return int(self.current_values.get("tilt") or 0)
+
+    @tilt.setter
+    def tilt(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError("tilt must be an integer 0..65535")
+        if not 0 <= value <= 0xFFFF:
+            raise ValueError("tilt must be 0..65535")
+        pan = int(self.current_values.get("pan") or 0)
+        self.set_pan_tilt(pan, value)

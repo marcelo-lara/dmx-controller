@@ -28,6 +28,13 @@ for fixture in fixtures:
     ## set the color of each fixture to blue
     fixture.color = "blue"
 
+    ## if the fixture is a moving head, move it to a specific position
+    if fixture.type == "moving_head":
+        if hasattr(fixture, 'speed'):
+            fixture.speed = 100  # set speed to a medium value
+        fixture.pan = 32766  # set pan to mid position
+        fixture.tilt = 1280  # set tilt to a specific position
+
     time.sleep(0.5) # wait a bit to see the changes in the fixture
 
 
