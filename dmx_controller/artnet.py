@@ -56,6 +56,7 @@ class ArtNetSender:
         retries: int = 0,
         reuse_socket: bool = True,
         physical: int = 0,
+        debug: bool = False,
     ):
         self.host = host
         self.port = port
@@ -67,6 +68,8 @@ class ArtNetSender:
         self._reuse_socket = bool(reuse_socket)
         self._physical = int(physical)
         self._sequence = 0
+        # debug: dump hex payload on successful send when True
+        self.debug = bool(debug)
 
         self._socket = None
         if self._reuse_socket:
@@ -83,10 +86,16 @@ class ArtNetSender:
             pass
         return s
 
-    def send(self, data: Union[bytes, bytearray], force: bool = False) -> None:
+    def send(self, data: Union[bytes, bytearray], force: bool = False) -> bool:
+        """Send the given DMX payload to the configured host/port.
+
+        Returns True if a send was actually performed, or False if a send was
+        skipped due to rate limiting. Raises an exception if all send attempts
+        failed.
+        """
         now = perf_counter()
         if not force and (now - self._last_send) < (1.0 / self._fps):
-            return
+            return False
         self._last_send = now
 
         seq = self._sequence
@@ -103,7 +112,8 @@ class ArtNetSender:
                     sock.close()
                 # increment sequence on successful send
                 self._sequence = (self._sequence + 1) & 0xFF
-                return
+                # don't perform debug printing here - controller will handle it
+                return True
             except Exception as exc:
                 last_exc = exc
                 # if using ephemeral sockets, ensure we close them
