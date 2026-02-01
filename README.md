@@ -3,30 +3,6 @@
 A small, dependency-free Python library to build and emit Art-Net DMX frames.
 The package contains a thread-safe universe buffer, an Art-Net packet sender, a timing engine, and fixture helpers.
 
-## Quick start
-
-Install dev tools (for running tests locally):
-
-```bash
-python3.10 -m venv dmx-controller
-source dmx-controller/bin/activate
-pip install -r requirements.txt
-```
-
-Run the example (uses `example.py` in the repo root):
-
-```bash
-python example.py
-```
-
-Run tests:
-
-```bash
-pytest -q
-```
-
----
-
 ## Example (usage)
 
 This project exposes a simple, high-level `Controller` API inspired by the `example.py` script.
@@ -83,6 +59,29 @@ c.stop()
 
 - Python 3.10+ is required.
 - Tests use `pytest`; dev tools are listed in `requirements.txt`.
+
+
+## Development Notes
+
+Install dev tools (for running tests locally):
+
+```bash
+python3.10 -m venv dmx-controller
+source dmx-controller/bin/activate
+pip install -r requirements.txt
+```
+
+Run the example (uses `example.py` in the repo root):
+
+```bash
+python example.py
+```
+
+Run tests:
+
+```bash
+pytest -q
+```
 
 ## Contact
 
